@@ -3,7 +3,7 @@ package com.bean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SignupBean 
+public class UserBean 
 {
 	int userid;
 	int roleid;
