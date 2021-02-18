@@ -28,44 +28,33 @@ public class RoleDao {
 		}
 		return roleBean;
 	}
-	
-	public RoleBean deleteRole(int roleid)
-	{
+
+	public RoleBean deleteRole(int roleid) {
 		RoleBean roleBean = null;
-		try 
-		{
-			roleBean=getRoleById(roleid);
-			if(roleBean != null)
-			{
-				stmt.update("delete from role where roleid=?",roleid);
+		try {
+			roleBean = getRoleById(roleid);
+			if (roleBean != null) {
+				stmt.update("delete from role where roleid=?", roleid);
 			}
-			
-		} 
-		catch (Exception e) 
-		{
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return roleBean;
-		
-		 
+
 	}
 
-	public List<RoleBean> getAllRoles() 
-	{
-		List<RoleBean> roles=null;
-		try 
-		{
+	public List<RoleBean> getAllRoles() {
+		List<RoleBean> roles = null;
+		try {
 			roles = stmt.query("select * from role", BeanPropertyRowMapper.newInstance(RoleBean.class));
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return roles;
 	}
 
-	public void updateRole(RoleBean roleBean) 
-	{
-		stmt.update("update role set rolename=? where roleid=?",roleBean.getRolename(),roleBean.getRoleid());
+	public void updateRole(RoleBean roleBean) {
+		stmt.update("update role set rolename=? where roleid=?", roleBean.getRolename(), roleBean.getRoleid());
 	}
 }
