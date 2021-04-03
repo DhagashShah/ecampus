@@ -14,6 +14,16 @@ public class UserBean
 	char gender;
 	long  contact;
 	
+	String rolename;
+	
+	public String getRolename() {
+		return rolename;
+	}
+
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
+	}
+
 	public int getUserid() {
 		return userid;
 	}

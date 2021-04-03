@@ -3,6 +3,7 @@ package com.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bean.CourseBean;
 import com.bean.ResponseBean;
+import com.bean.StudentCourseBean;
 import com.dao.CourseDao;
 
+@CrossOrigin
 @RestController
 public class CourseController 
 {
@@ -41,6 +44,7 @@ public class CourseController
 		responseBean.setData(courses);
 		responseBean.setMsg("All Courses...");
 		responseBean.setStatus(200);
+		
 		return responseBean;
 	}
 	
@@ -73,5 +77,31 @@ public class CourseController
 		}
 		return responseBean;
 	}
+	
+	@GetMapping("/getcoursebyid/{courseid}")
+	public ResponseBean<CourseBean> getCourseById(@PathVariable("courseid")int courseid)
+	{
+		ResponseBean<CourseBean> responseBean = new ResponseBean<>();
+		CourseBean courseBean = courseDao.getCourseById(courseid);
+		responseBean.setData(courseBean);
+		responseBean.setMsg("course fetched...");
+		responseBean.setStatus(200);
+		return responseBean;
+	}
+	
+	@PostMapping("/assigncourse")
+	public ResponseBean<StudentCourseBean> assignCourse(@RequestBody StudentCourseBean studentCourseBean)
+	{
+		
+		ResponseBean<StudentCourseBean> responseBean = new ResponseBean<>();
+		courseDao.insertStudentCourse(studentCourseBean);
+		responseBean.setData(studentCourseBean);
+		responseBean.setMsg("Course Allocated to Student");
+		responseBean.setStatus(200);
+		return responseBean;
+	}
+	
+	
+	
 	
 }

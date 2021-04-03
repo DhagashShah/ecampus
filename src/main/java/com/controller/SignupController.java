@@ -3,6 +3,7 @@ package com.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import com.bean.UserBean;
 
 import com.dao.UserDao;
 
+@CrossOrigin
 @RestController
 public class SignupController 
 {
@@ -36,12 +38,35 @@ public class SignupController
 	}
 	
 	@GetMapping("/listusers")
-	public ResponseBean<List<UserBean>> getAllUsers(@RequestBody UserBean userBean)
+	public ResponseBean<List<UserBean>> getAllUsers()
 	{
 		ResponseBean<List<UserBean>> responseBean = new ResponseBean<>();
 		List<UserBean> users = userDao.getUsers();
 		responseBean.setData(users);
+		
 		responseBean.setMsg("Users...");
+		responseBean.setStatus(200);
+		return responseBean;
+	}
+	
+	@GetMapping("/listfaculty")
+	public ResponseBean<List<UserBean>> getFaculty()
+	{
+		ResponseBean<List<UserBean>> responseBean = new ResponseBean<>();
+		List<UserBean> faculty = userDao.getFaculty();
+		responseBean.setData(faculty);
+		responseBean.setMsg("All Faculty...");
+		responseBean.setStatus(200);
+		return responseBean;
+	}
+	
+	@GetMapping("/liststudent")
+	public ResponseBean<List<UserBean>> getStudent()
+	{
+		ResponseBean<List<UserBean>> responseBean = new ResponseBean<>();
+		List<UserBean> student= userDao.getStudent();
+		responseBean.setData(student);
+		responseBean.setMsg("Students...");
 		responseBean.setStatus(200);
 		return responseBean;
 	}

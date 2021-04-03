@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.bean.CourseBean;
+import com.bean.StudentCourseBean;
 
 @Repository
 public class CourseDao {
@@ -20,7 +21,7 @@ public class CourseDao {
 	}
 
 	public List<CourseBean> allCourse() {
-		List<CourseBean> courseBeans = stmt.query("select * from course",
+		List<CourseBean> courseBeans = stmt.query("select * from course order by courseid asc",
 				BeanPropertyRowMapper.newInstance(CourseBean.class));
 		return courseBeans;
 	}
@@ -32,14 +33,13 @@ public class CourseDao {
 
 	public CourseBean deleteCourse(int courseid) {
 		CourseBean courseBean = getCourseById(courseid);
-		if (courseBean!=null) 
-		{
-			stmt.update("delete from course where courseid=?",courseid);
+		if (courseBean != null) {
+			stmt.update("delete from course where courseid=?", courseid);
 		}
 		return courseBean;
 	}
 
-	private CourseBean getCourseById(int courseid) {
+	public CourseBean getCourseById(int courseid) {
 		CourseBean courseBean = null;
 		try {
 			courseBean = stmt.queryForObject("select * from course where courseid=?",
@@ -48,5 +48,12 @@ public class CourseDao {
 			e.printStackTrace();
 		}
 		return courseBean;
+	}
+
+	public void insertStudentCourse(StudentCourseBean studentCourseBean) {
+		for (int c : studentCourseBean.getCourseid()) {
+			stmt.update("insert into studentcourse(userid,courseid) values(?,?)", studentCourseBean.getUserid(), c);
+		}
+
 	}
 }
