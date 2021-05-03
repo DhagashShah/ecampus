@@ -7,8 +7,10 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.bean.CountBean;
 import com.bean.CourseBean;
 import com.bean.StudentCourseBean;
+import com.bean.UserBean;
 
 @Repository
 public class CourseDao {
@@ -51,9 +53,31 @@ public class CourseDao {
 	}
 
 	public void insertStudentCourse(StudentCourseBean studentCourseBean) {
-		for (int c : studentCourseBean.getCourseid()) {
-			stmt.update("insert into studentcourse(userid,courseid) values(?,?)", studentCourseBean.getUserid(), c);
+		for (int c : studentCourseBean.getUserid()) {
+			stmt.update("insert into studentcourse(userid,courseid) values(?,?)", c, studentCourseBean.getCourseid());
 		}
 
+	}
+
+	public List<UserBean> getStudent(int courseid) {
+		List<UserBean> users = null;
+		users = stmt.query(
+				"select * from users where roleid=3 and active=true and userid not in (select userid from studentcourse where courseid=?)",
+				BeanPropertyRowMapper.newInstance(UserBean.class), new Object[] { courseid });
+		return users;
+	}
+
+	public CountBean getTotalCourse() {
+		CountBean c = stmt.queryForObject("select count(*) from course",
+				BeanPropertyRowMapper.newInstance(CountBean.class));
+		return c;
+	}
+
+	public List<CourseBean> getStudentByCourse(int userid) {
+		List<CourseBean> courses = null;
+		courses = stmt.query(
+				"select users.userid,course.*,studentcourse.* from users,course,studentcourse where users.userid=studentcourse.userid and course.courseid=studentcourse.courseid and studentcourse.userid=?",
+				BeanPropertyRowMapper.newInstance(CourseBean.class), new Object[] { userid });
+		return courses;
 	}
 }

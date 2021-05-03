@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class StudentCourseBean 
 {
-	int userid;
-	int[] courseid;
+	int[] userid;
+	int courseid;
 	String firstname;
 	public String getFirstname() {
 		return firstname;
@@ -15,16 +15,16 @@ public class StudentCourseBean
 		this.firstname = firstname;
 	}
 	
-	public int getUserid() {
+	public int[] getUserid() {
 		return userid;
 	}
-	public void setUserid(int userid) {
+	public void setUserid(int[] userid) {
 		this.userid = userid;
 	}
-	public int[] getCourseid() {
+	public int getCourseid() {
 		return courseid;
 	}
-	public void setCourseid(int[] courseid) {
+	public void setCourseid(int courseid) {
 		this.courseid = courseid;
 	}
 	

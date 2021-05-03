@@ -1,5 +1,7 @@
 package com.bean;
 
+import java.util.List;
+
 public class ResponseBean<T>
 {
 	T data;
@@ -24,6 +26,7 @@ public class ResponseBean<T>
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	
 	
 	
 	

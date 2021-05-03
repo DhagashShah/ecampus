@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bean.CountBean;
 import com.bean.CourseBean;
 import com.bean.ResponseBean;
 import com.bean.StudentCourseBean;
+import com.bean.UserBean;
 import com.dao.CourseDao;
 
 @CrossOrigin
@@ -89,6 +91,17 @@ public class CourseController
 		return responseBean;
 	}
 	
+	@GetMapping("/getStudentNotInAnyCourse/{courseid}")
+	public ResponseBean<List<UserBean>> getStudent(@PathVariable("courseid")int courseid)
+	{
+		ResponseBean<List<UserBean>> responseBean = new ResponseBean<>();
+		List<UserBean> users = courseDao.getStudent(courseid);
+		responseBean.setData(users);
+		responseBean.setMsg("Student Not Registered in any course....");
+		responseBean.setStatus(200);
+		return responseBean;
+	}
+	
 	@PostMapping("/assigncourse")
 	public ResponseBean<StudentCourseBean> assignCourse(@RequestBody StudentCourseBean studentCourseBean)
 	{
@@ -100,6 +113,30 @@ public class CourseController
 		responseBean.setStatus(200);
 		return responseBean;
 	}
+	
+	@GetMapping("/totalcourse")
+	public ResponseBean<CountBean> getTotalBatch()
+	{
+		ResponseBean<CountBean> responseBean = new ResponseBean<>();
+		CountBean countBean = courseDao.getTotalCourse();
+		responseBean.setData(countBean);
+		responseBean.setMsg("Total Course");
+		responseBean.setStatus(200);
+		return responseBean;
+	}
+	
+	
+	@GetMapping("/getStudentByCourse/{userid}")
+	public ResponseBean<List<CourseBean>> getStudentByCourse(@PathVariable("userid")int userid)
+	{
+		ResponseBean<List<CourseBean>> responseBean = new ResponseBean<>();
+		List<CourseBean> courses = courseDao.getStudentByCourse(userid);
+		responseBean.setData(courses);
+		responseBean.setMsg("Course Fetched");
+		responseBean.setStatus(200);
+		return responseBean;
+	}
+	
 	
 	
 	

@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.bean.CountBean;
 import com.bean.LoginBean;
 import com.bean.UserBean;
 
@@ -16,9 +17,10 @@ public class UserDao {
 	JdbcTemplate stmt;
 
 	public void insertUser(UserBean userBean) {
-		stmt.update("insert into users(firstname,lastname,email,password,gender,contact,roleid) values(?,?,?,?,?,?,?)",
+		stmt.update(
+				"insert into users(firstname,lastname,email,password,gender,contact,roleid,active) values(?,?,?,?,?,?,?,?)",
 				userBean.getFirstname(), userBean.getLastname(), userBean.getEmail(), userBean.getPassword(),
-				userBean.getGender(), userBean.getContact(), userBean.getRoleid());
+				userBean.getGender(), userBean.getContact(), userBean.getRoleid(), userBean.isActive());
 	}
 
 	public List<UserBean> getUsers() {
@@ -31,9 +33,10 @@ public class UserDao {
 
 	public void updateUser(UserBean userBean) {
 		stmt.update(
-				"update users set firstname=?,lastname=?,email=?,password=?,gender=?,contact=?,roleid=? where userid=?",
+				"update users set firstname=?,lastname=?,email=?,password=?,gender=?,contact=?,roleid=?,active=? where userid=?",
 				userBean.getFirstname(), userBean.getLastname(), userBean.getEmail(), userBean.getPassword(),
-				userBean.getGender(), userBean.getContact(), userBean.getRoleid(), userBean.getUserid());
+				userBean.getGender(), userBean.getContact(), userBean.getRoleid(), userBean.isActive(),
+				userBean.getUserid());
 	}
 
 	public UserBean getUserById(int userid) {
@@ -56,21 +59,21 @@ public class UserDao {
 		return userBean;
 	}
 
-	public LoginBean login(String email, String password) {
-		LoginBean loginBean = null;
+	public UserBean login(String email, String password) {
+		UserBean users = null;
 		try {
-			loginBean = stmt.queryForObject("select * from users where email=? and password=?",
-					BeanPropertyRowMapper.newInstance(LoginBean.class), new Object[] { email, password });
+			users = stmt.queryForObject("select * from users where active=true and  email=? and password=?",
+					BeanPropertyRowMapper.newInstance(UserBean.class), new Object[] { email, password });
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return loginBean;
+		return users;
 	}
 
 	public List<UserBean> getFaculty() {
 		List<UserBean> faculty = null;
 		faculty = stmt.query(
-				"SELECT users.userid,users.firstname,users.lastname,users.email,users.gender,users.contact,role.rolename FROM users INNER JOIN role ON users.roleid=role.roleid and role.roleid = 2",
+				"SELECT users.userid,users.firstname,users.lastname,users.email,users.gender,users.contact,users.active,role.rolename FROM users INNER JOIN role ON users.roleid=role.roleid and users.active=true and role.roleid = 2",
 				BeanPropertyRowMapper.newInstance(UserBean.class));
 		return faculty;
 	}
@@ -78,8 +81,50 @@ public class UserDao {
 	public List<UserBean> getStudent() {
 		List<UserBean> student = null;
 		student = stmt.query(
-				"SELECT users.userid,users.firstname,users.lastname,users.email,users.gender,users.contact,role.rolename FROM users INNER JOIN role ON users.roleid=role.roleid and role.roleid = 3",
+				"SELECT users.userid,users.firstname,users.lastname,users.email,users.gender,users.contact,role.rolename FROM users INNER JOIN role ON users.roleid=role.roleid and role.roleid = 3 and users.active=true order by users.userid asc",
 				BeanPropertyRowMapper.newInstance(UserBean.class));
 		return student;
+	}
+
+	public List<UserBean> getBlockedStudent() {
+		List<UserBean> student = null;
+		student = stmt.query(
+				"select users.*,role.rolename from users,role where users.roleid=role.roleid and active=false and role.roleid=3",
+				BeanPropertyRowMapper.newInstance(UserBean.class));
+		return student;
+
+	}
+
+	public List<UserBean> getBlockedFaculty() 
+	{
+		List<UserBean> faculty = null;
+		faculty = stmt.query(
+				"select users.*,role.rolename from users,role where users.roleid=role.roleid and active=false and role.roleid=2",
+				BeanPropertyRowMapper.newInstance(UserBean.class));
+		return faculty;
+	}
+
+	public CountBean getTotalFaculty() 
+	{
+		CountBean c  = stmt.queryForObject("select count(*) from users where roleid=2",BeanPropertyRowMapper.newInstance(CountBean.class));
+		return c;
+	}
+
+	public CountBean getTotalStudent() 
+	{
+		CountBean c  = stmt.queryForObject("select count(*) from users where roleid=3",BeanPropertyRowMapper.newInstance(CountBean.class));
+		return c;
+	}
+
+	public UserBean getUserByEmail(String email) 
+	{
+		UserBean userBean = null;
+		userBean = stmt.queryForObject("select * from users where email=?",BeanPropertyRowMapper.newInstance(UserBean.class),new Object[] {email});
+		return userBean;
+	}
+
+	public void updatePassword(UserBean dbUser) 
+	{
+		stmt.update("update users set password=? where email=?",dbUser.getPassword(),dbUser.getEmail());
 	}
 }

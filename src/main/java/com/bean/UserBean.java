@@ -1,5 +1,7 @@
 package com.bean;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,8 +15,57 @@ public class UserBean
 	String password;
 	char gender;
 	long  contact;
-	
+	boolean active;
 	String rolename;
+	Date adate;
+	int batchid;
+	String otp;
+	String name;
+	
+	
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+
+	public int getBatchid() {
+		return batchid;
+	}
+
+	public void setBatchid(int batchid) {
+		this.batchid = batchid;
+	}
+
+	public Date getAdate() {
+		return adate;
+	}
+
+	public void setAdate(Date adate) {
+		this.adate = adate;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	
 	
 	public String getRolename() {
 		return rolename;
