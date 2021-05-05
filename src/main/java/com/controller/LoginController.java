@@ -28,7 +28,7 @@ public class LoginController {
 	@Autowired
 	MailService mailService;
 
-	@GetMapping("resetpassword/{email}")
+	@GetMapping("/resetpassword/{email}")
 	public ResponseBean<UserBean> sendOtpForResetPassword(@PathVariable("email") String email, UserBean userBean) {
 		System.out.println("Reset Called");
 		userBean = userDao.getUserByEmail(email);
