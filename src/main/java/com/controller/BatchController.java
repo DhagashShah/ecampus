@@ -56,11 +56,11 @@ public class BatchController
 		return responseBean;
 	}
 	
-	@DeleteMapping("/deletebatchstudent/{userid}")
-	public ResponseBean<UserBean> deletebatchstudent(@PathVariable("userid")int userid)
+	@DeleteMapping("/deletebatchstudent/{userid}/{batchid}")
+	public ResponseBean<UserBean> deletebatchstudent(@PathVariable("userid")int userid,@PathVariable("batchid")int batchid)
 	{
 		ResponseBean<UserBean> responseBean = new ResponseBean<>();
-		UserBean userBean = batchDao.deleteBatchStudent(userid);
+		UserBean userBean = batchDao.deleteBatchStudent(userid,batchid);
 		if(userBean!=null)
 		{
 			responseBean.setData(userBean);
@@ -70,6 +70,7 @@ public class BatchController
 		else 
 		{
 			responseBean.setMsg("Student not found....");
+			responseBean.setStatus(201);
 		}
 		
 		return responseBean;

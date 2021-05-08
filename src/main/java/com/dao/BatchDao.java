@@ -126,19 +126,19 @@ public class BatchDao {
 		return students;
 	}
 
-	public UserBean getStudentByBatch1(int userid) {
+	public UserBean getStudentByBatch1(int userid,int batchid) {
 		UserBean userBean = null;
-		userBean = stmt.queryForObject("select * from studentbatch where userid=?",
-				BeanPropertyRowMapper.newInstance(UserBean.class), new Object[] { userid });
+		userBean = stmt.queryForObject("select * from studentbatch where userid=? and batchid=?",
+				BeanPropertyRowMapper.newInstance(UserBean.class), new Object[] { userid,batchid});
 		return userBean;
 	}
 
-	public UserBean deleteBatchStudent(int userid) {
+	public UserBean deleteBatchStudent(int userid,int batchid) {
 		UserBean userBean = null;
 		try {
-			userBean = getStudentByBatch1(userid);
+			userBean = getStudentByBatch1(userid,batchid);
 			if (userBean != null) {
-				stmt.update("delete from studentbatch where userid=?", userid);
+				stmt.update("delete from studentbatch where userid=? and batchid=?", userid,batchid);
 			}
 
 		} catch (Exception e) {
