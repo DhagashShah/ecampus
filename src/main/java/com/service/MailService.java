@@ -24,7 +24,7 @@ public class MailService {
 		// Sender's email ID needs to be mentioned
 		String from = "dhagash2000@gmail.com";// change accordingly
 		final String username = "dhagash2000@gmail.com";// change accordingly
-		final String password = "zkvb mxjd sgdu qxeo";// change accordingly
+		final String password = "idkp fyij rkjz guvq";// change accordingly
 
 		// Assuming you are sending email through relay.jangosmtp.net
 		String host = "smtp.gmail.com";
@@ -76,7 +76,7 @@ public class MailService {
 // Sender's email ID needs to be mentioned
 		String from = "dhagash2000@gmail.com";// change accordingly
 		final String username = "dhagash2000@gmail.com";// change accordingly
-		final String password = "zkvb mxjd sgdu qxeo";// change accordingly
+		final String password = "idkp fyij rkjz guvq";// change accordingly
 
 // Assuming you are sending email through relay.jangosmtp.net
 		String host = "smtp.gmail.com";
